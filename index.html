@@ -507,6 +507,58 @@
         footer a { color: var(--python-blue); font-weight: 600; text-decoration: none; }
         footer a:hover { text-decoration: underline; }
 
+        /* ---------- Aviso de envío y bloqueo ---------- */
+        .aviso-envio {
+            display: none;
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            color: #166534;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 0 0 26px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .aviso-envio.visible { display: block; }
+        .aviso-envio.error { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
+
+        .estado-envio {
+            display: none;
+            margin-top: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        body.calificado .estado-envio { display: block; }
+        .estado-envio.ok { color: #15803d; }
+        .estado-envio.fail { color: #b91c1c; }
+        .estado-envio a { color: inherit; }
+
+        .resumen-errores {
+            display: none;
+            margin: 18px auto 0;
+            max-width: 660px;
+            text-align: left;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 0.93rem;
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        body.calificado .resumen-errores { display: block; }
+        .resumen-errores.sin-errores { background: #f0fdf4; border-color: #86efac; color: #166534; }
+        .resumen-errores b { color: inherit; }
+
+        body.enviada .pregunta { border-color: #cbd5e1; }
+        body.enviada input:disabled,
+        body.enviada textarea:disabled { background: #f1f5f9; color: #475569; cursor: not-allowed; }
+        body.enviada .editor:disabled { background: #0f172a; color: #94a3b8; }
+
         @media (max-width: 700px) {
             .hero h1 { font-size: 2rem; }
             .datos-alumno { grid-template-columns: 1fr; }
@@ -558,6 +610,8 @@
                 <li>En la <strong>Parte A</strong> marcá una sola opción por pregunta.</li>
                 <li>En la <strong>Parte B</strong> escribí la salida exacta del programa. Si son varias líneas, separalas con un espacio.</li>
                 <li>En la <strong>Parte C</strong> escribí el código completo en Python. El corrector revisa la estructura, no ejecuta el programa.</li>
+                <li>La evaluación se puede realizar <strong>una sola vez</strong>. Al presionar <strong>Corregir y enviar</strong> ya no se puede modificar.</li>
+                <li>Al corregir, la <strong>nota y la corrección</strong> se envían automáticamente a <strong>tecnicaunodocke@gmail.com</strong>.</li>
                 <li>Al terminar, presioná <strong>Corregir evaluación</strong>. Vas a ver el puntaje y la explicación de cada respuesta.</li>
             </ul>
 
@@ -770,10 +824,12 @@ print("Suma total:", suma)</code></pre>
 
     <!-- ================= RESULTADO ================= -->
     <div class="acciones no-print">
-        <button type="button" class="btn btn-primario" id="btn-corregir">✅ Corregir evaluación</button>
+        <button type="button" class="btn btn-primario" id="btn-corregir">✅ Corregir y enviar</button>
         <button type="button" class="btn btn-secundario" id="btn-reiniciar">🔄 Reiniciar</button>
         <button type="button" class="btn btn-secundario" id="btn-imprimir">🖨️ Imprimir</button>
     </div>
+
+    <div class="aviso-envio" id="aviso-envio" role="status"></div>
 
     <section class="resultado" id="resultado" aria-live="polite">
         <div class="puntaje-grande"><span id="puntaje-total">0</span><small> / 13 puntos</small></div>
@@ -784,9 +840,11 @@ print("Suma total:", suma)</code></pre>
             <span>Parte B: <b id="puntos-b">0</b> / 4</span>
             <span>Parte C: <b id="puntos-c">0</b> / 4</span>
         </div>
+        <div class="resumen-errores" id="resumen-errores"></div>
         <p class="nota no-print" id="nota-resultado" style="display:none;">
             Las respuestas correctas y las soluciones de referencia ya están visibles en cada consigna.
         </p>
+        <p class="estado-envio" id="estado-envio"></p>
     </section>
 
     <footer>
@@ -800,7 +858,17 @@ print("Suma total:", suma)</code></pre>
 (function () {
     'use strict';
 
+    var MAX_PUNTOS = 13;
+    var CORREO_DOCENTE = 'tecnicaunodocke@gmail.com';
+    var CLAVE_ENVIO = 'evaluacion_python_13_enviada_v1';
+    var bloqueada = false;
+
     /* ---------- Configuración de los ejercicios de código ---------- */
+    function variableAcumuladora(codigo) {
+        var m = codigo.match(/\b([a-z_][a-z0-9_]*)\s*=\s*0\b/);
+        return m ? m[1] : null;
+    }
+
     var EJERCICIOS = {
         c1: [
             { d: 'Pide al menos dos datos con input()', f: function (c) { return (c.match(/\binput\s*\(/g) || []).length >= 2; } },
@@ -812,10 +880,14 @@ print("Suma total:", suma)</code></pre>
         c2: [
             { d: 'Usa un bucle for o while', f: function (c) { return /\b(for|while)\b/.test(c); } },
             { d: 'Recorre del 1 al 10', f: function (c) { return /range\s*\(\s*1\s*,\s*11\s*\)/.test(c) || /range\s*\(\s*(0\s*,\s*)?10\s*\)/.test(c) || /while[^\n]*<=\s*10/.test(c); } },
-            { d: 'Inicializa un acumulador en 0', f: function (c) { return /(suma|total|acum|resultado)\w*\s*=\s*0/.test(c); } },
-            { d: 'Acumula los valores con +=', f: function (c) { return /\+=/.test(c) || /=\s*(suma|total|acum|resultado)\s*\+/.test(c); } },
-            { d: 'Imprime los números y el total', f: function (c) { return (c.match(/print\s*\(/g) || []).length >= 2; } },
-            { d: 'Imprime la suma o el total al final', f: function (c) { return /print\s*\([^)]*(suma|total|acum|resultado)/.test(c); } }
+            { d: 'Inicializa un acumulador en 0 (puede llamarse a, suma, total...)', f: function (c) { return variableAcumuladora(c) !== null; } },
+            { d: 'Acumula con += o con variable = variable + ...', f: function (c) { return /\+=/.test(c) || /\b([a-z_]\w*)\s*=\s*\1\s*\+/.test(c); } },
+            { d: 'Imprime los números y el total', f: function (c) { return (c.match(/\bprint\s*\(/g) || []).length >= 2; } },
+            { d: 'Imprime el acumulador al final', f: function (c) {
+                var v = variableAcumuladora(c);
+                if (!v) return false;
+                return new RegExp('\\bprint\\s*\\([^)]*\\b' + v + '\\b').test(c);
+            } }
         ]
     };
 
@@ -837,14 +909,33 @@ print("Suma total:", suma)</code></pre>
         return Number.isInteger(n) ? String(n) : n.toFixed(1);
     }
 
+    function redondear(n) {
+        return Math.round(n * 10) / 10;
+    }
+
+    function numero(pregunta) {
+        var el = pregunta.querySelector('.num-preg');
+        return el ? el.textContent.trim() : '?';
+    }
+
+    function fechaLegible(iso) {
+        try { return new Date(iso).toLocaleDateString('es-AR'); } catch (e) { return ''; }
+    }
+
     /* ---------- Corrección ---------- */
-    function corregir() {
+    function evaluar() {
         var puntosA = 0;
         var puntosB = 0;
         var puntosC = 0;
+        var erroresA = [];
+        var erroresB = [];
+        var erroresC = [];
+        var lineas = [];
+        var respuestas = { mc: {}, salidas: {}, codigo: {} };
 
         /* Parte A */
         document.querySelectorAll('.mc').forEach(function (pregunta) {
+            var n = numero(pregunta);
             var correcta = pregunta.dataset.correcta;
             var marcada = pregunta.querySelector('input[type="radio"]:checked');
             var elegida = marcada ? marcada.value : null;
@@ -857,32 +948,56 @@ print("Suma total:", suma)</code></pre>
             var labelCorrecta = pregunta.querySelector('.opciones label[data-op="' + correcta + '"]');
             if (labelCorrecta) labelCorrecta.classList.add('opcion-correcta');
 
+            var textoCorrecta = labelCorrecta ? labelCorrecta.textContent.trim() : correcta;
+            var textoElegida = '(sin responder)';
+            if (marcada) {
+                var labelElegida = marcada.closest('label');
+                textoElegida = labelElegida ? labelElegida.textContent.trim() : elegida;
+            }
+
+            respuestas.mc[pregunta.querySelector('input').name] = elegida || '';
+
             if (elegida === correcta) {
                 puntosA++;
                 pregunta.classList.add('correcta');
             } else {
                 pregunta.classList.add('incorrecta');
-                if (elegida) {
-                    var labelElegida = pregunta.querySelector('.opciones label[data-op="' + elegida + '"]');
-                    if (labelElegida) labelElegida.classList.add('opcion-elegida-mal');
+                erroresA.push(n);
+                if (marcada) {
+                    var labelMal = pregunta.querySelector('.opciones label[data-op="' + elegida + '"]');
+                    if (labelMal) labelMal.classList.add('opcion-elegida-mal');
                 }
             }
+
+            lineas.push(n + ') Opción múltiple');
+            lineas.push('   Respuesta: ' + textoElegida);
+            lineas.push('   Correcta:  ' + textoCorrecta);
+            lineas.push('   Resultado: ' + (elegida === correcta ? 'OK' : 'ERROR'));
         });
 
         /* Parte B */
         document.querySelectorAll('.salida').forEach(function (pregunta) {
+            var n = numero(pregunta);
             var aceptadas = pregunta.dataset.aceptadas.split('|').map(normalizar);
             var campo = pregunta.querySelector('input');
             var valor = normalizar(campo.value);
             var ok = aceptadas.indexOf(valor) !== -1;
 
+            respuestas.salidas[campo.id] = campo.value;
+
             pregunta.classList.remove('correcta', 'incorrecta');
             if (ok) {
                 puntosB++;
                 pregunta.classList.add('correcta');
-            } else if (valor !== '') {
+            } else {
                 pregunta.classList.add('incorrecta');
+                erroresB.push(valor === '' ? n + ' (sin responder)' : n);
             }
+
+            lineas.push(n + ') Salida de programa');
+            lineas.push('   Respuesta: ' + (campo.value.trim() || '(sin responder)'));
+            lineas.push('   Esperada:  ' + pregunta.dataset.aceptadas.split('|')[0]);
+            lineas.push('   Resultado: ' + (ok ? 'OK' : 'ERROR'));
         });
 
         /* Parte C */
@@ -895,6 +1010,8 @@ print("Suma total:", suma)</code></pre>
             var checks = EJERCICIOS[id];
             var aprobados = 0;
 
+            respuestas.codigo[id] = area.value;
+
             var items = checks.map(function (check) {
                 var paso = false;
                 try { paso = check.f(codigo); } catch (e) { paso = false; }
@@ -906,18 +1023,35 @@ print("Suma total:", suma)</code></pre>
             var puntos = (aprobados / checks.length) * PUNTOS_POR_EJERCICIO;
             puntosC += puntos;
 
+            var card = area.closest('.pregunta');
+            var n = card ? numero(card) : id;
+            if (puntos < PUNTOS_POR_EJERCICIO) {
+                erroresC.push(n + ' (faltan requisitos)');
+            }
+
             contenedor.innerHTML =
                 '<strong class="puntos-code">' + formatear(puntos) + ' / ' + PUNTOS_POR_EJERCICIO + ' puntos</strong>' +
                 '<ul>' + items + '</ul>';
+
+            lineas.push(n + ') Ejercicio de código (' + formatear(puntos) + ' / ' + PUNTOS_POR_EJERCICIO + ' puntos)');
+            checks.forEach(function (check, i) {
+                var paso = false;
+                try { paso = check.f(codigo); } catch (e) { paso = false; }
+                lineas.push('   ' + (paso ? 'OK: ' : 'FALTA: ') + check.d);
+            });
+            lineas.push('   Código enviado:');
+            area.value.split('\n').forEach(function (l) {
+                lineas.push('   ' + l);
+            });
         });
 
-        var total = Math.round((puntosA + puntosB + puntosC) * 10) / 10;
+        var total = redondear(puntosA + puntosB + puntosC);
 
         document.getElementById('puntaje-total').textContent = formatear(total);
         document.getElementById('puntos-a').textContent = puntosA;
         document.getElementById('puntos-b').textContent = puntosB;
-        document.getElementById('puntos-c').textContent = formatear(Math.round(puntosC * 10) / 10);
-        document.getElementById('barra-fill').style.width = (total / 13 * 100) + '%';
+        document.getElementById('puntos-c').textContent = formatear(redondear(puntosC));
+        document.getElementById('barra-fill').style.width = (total / MAX_PUNTOS * 100) + '%';
 
         var mensaje;
         if (total >= 12) {
@@ -932,14 +1066,180 @@ print("Suma total:", suma)</code></pre>
         document.getElementById('mensaje').textContent = mensaje;
         document.getElementById('nota-resultado').style.display = 'block';
 
+        var partesError = [];
+        if (erroresA.length) partesError.push('Preguntas ' + erroresA.join(', '));
+        if (erroresB.length) partesError.push('Salidas ' + erroresB.join(', '));
+        if (erroresC.length) partesError.push('Código ' + erroresC.join(', '));
+        var erroresTexto = partesError.join(' · ');
+
+        var resumen = document.getElementById('resumen-errores');
+        if (!erroresTexto) {
+            resumen.className = 'resumen-errores sin-errores';
+            resumen.innerHTML = '🎯 <b>Sin errores.</b> Respondiste todo correctamente.';
+        } else {
+            resumen.className = 'resumen-errores';
+            resumen.innerHTML = '⚠️ <b>Errores a revisar:</b> ' + erroresTexto +
+                '. Mirá la explicación de cada consigna marcada en rojo.';
+        }
+
         document.querySelector('.resultado').classList.add('visible');
         document.body.classList.add('calificado');
+
+        return {
+            total: total,
+            puntosA: puntosA,
+            puntosB: puntosB,
+            puntosC: redondear(puntosC),
+            erroresA: erroresA,
+            erroresB: erroresB,
+            erroresC: erroresC,
+            erroresTexto: erroresTexto,
+            detalle: lineas.join('\n'),
+            respuestas: respuestas
+        };
+    }
+
+    /* ---------- Guardado local (un solo intento) ---------- */
+    function datosEnvio(res) {
+        return {
+            nombre: document.getElementById('alumno-nombre').value.trim(),
+            curso: document.getElementById('alumno-curso').value.trim(),
+            fecha: document.getElementById('alumno-fecha').value,
+            total: res.total,
+            puntosA: res.puntosA,
+            puntosB: res.puntosB,
+            puntosC: res.puntosC,
+            erroresTexto: res.erroresTexto,
+            detalle: res.detalle,
+            respuestas: res.respuestas,
+            momento: new Date().toISOString()
+        };
+    }
+
+    function guardar(datos) {
+        try { localStorage.setItem(CLAVE_ENVIO, JSON.stringify(datos)); } catch (e) { /* sin almacenamiento */ }
+    }
+
+    function leerGuardado() {
+        try {
+            var raw = localStorage.getItem(CLAVE_ENVIO);
+            return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function restaurar(d) {
+        if (!d) return;
+        document.getElementById('alumno-nombre').value = d.nombre || '';
+        document.getElementById('alumno-curso').value = d.curso || '';
+        if (d.fecha) document.getElementById('alumno-fecha').value = d.fecha;
+
+        Object.keys(d.respuestas.mc || {}).forEach(function (name) {
+            var valor = d.respuestas.mc[name];
+            var radio = document.querySelector('input[name="' + name + '"][value="' + valor + '"]');
+            if (radio) radio.checked = true;
+        });
+        Object.keys(d.respuestas.salidas || {}).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.value = d.respuestas.salidas[id];
+        });
+        Object.keys(d.respuestas.codigo || {}).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.value = d.respuestas.codigo[id];
+        });
+    }
+
+    function bloquear(mensaje) {
+        bloqueada = true;
+        document.body.classList.add('enviada');
+
+        document.querySelectorAll('input, textarea').forEach(function (el) {
+            el.disabled = true;
+        });
+
+        var corrige = document.getElementById('btn-corregir');
+        var reinicia = document.getElementById('btn-reiniciar');
+        if (corrige) corrige.style.display = 'none';
+        if (reinicia) reinicia.style.display = 'none';
+
+        var aviso = document.getElementById('aviso-envio');
+        aviso.innerHTML = mensaje;
+        aviso.classList.add('visible');
+    }
+
+    /* ---------- Envío por correo ---------- */
+    function enviarCorreo(res) {
+        var estado = document.getElementById('estado-envio');
+        estado.className = 'estado-envio';
+        estado.textContent = 'Enviando la nota y la corrección por correo...';
+
+        var d = datosEnvio(res);
+        var asunto = 'Evaluación Python · ' + (d.nombre || 'Sin nombre') + ' · ' + formatear(res.total) + '/13';
+
+        var cuerpo = {
+            _subject: asunto,
+            _captcha: 'false',
+            Nombre: d.nombre || '(sin completar)',
+            Curso: d.curso || '(sin completar)',
+            Fecha: d.fecha || '(sin completar)',
+            Nota: formatear(res.total) + ' / 13',
+            'Parte A': res.puntosA + ' / 5',
+            'Parte B': res.puntosB + ' / 4',
+            'Parte C': formatear(res.puntosC) + ' / 4',
+            Errores: res.erroresTexto || 'Sin errores',
+            Correccion: res.detalle
+        };
+
+        fetch('https://formsubmit.co/ajax/' + CORREO_DOCENTE, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(cuerpo)
+        })
+        .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        })
+        .then(function () {
+            estado.className = 'estado-envio ok';
+            estado.textContent = '✅ Nota y corrección enviadas a ' + CORREO_DOCENTE + '.';
+        })
+        .catch(function () {
+            var mailto = 'mailto:' + CORREO_DOCENTE +
+                '?subject=' + encodeURIComponent(asunto) +
+                '&body=' + encodeURIComponent(
+                    'Nombre: ' + (d.nombre || '') +
+                    '\nCurso: ' + (d.curso || '') +
+                    '\nFecha: ' + (d.fecha || '') +
+                    '\nNota: ' + formatear(res.total) + '/13' +
+                    '\n\n' + res.detalle
+                );
+            estado.className = 'estado-envio fail';
+            estado.innerHTML = '⚠️ No se pudo enviar automáticamente. ' +
+                '<a href="' + mailto + '">Enviar la corrección por correo</a>.';
+        });
+    }
+
+    /* ---------- Corrección con envío único ---------- */
+    function corregir() {
+        if (bloqueada) return;
+
+        var res = evaluar();
+        var datos = datosEnvio(res);
+        guardar(datos);
+
+        bloquear('🔒 <b>Evaluación enviada.</b> Tu nota es <b>' + formatear(res.total) +
+            ' / 13</b> y la corrección se envía a ' + CORREO_DOCENTE +
+            '. No se puede volver a realizar ni modificar.');
+
+        enviarCorreo(res);
 
         document.getElementById('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    /* ---------- Reinicio ---------- */
+    /* ---------- Reinicio (solo antes de enviar) ---------- */
     function reiniciar() {
+        if (bloqueada) return;
         if (!confirm('¿Borrar todas tus respuestas y empezar de nuevo?')) return;
 
         document.querySelectorAll('input[type="radio"]').forEach(function (r) { r.checked = false; });
@@ -962,14 +1262,44 @@ print("Suma total:", suma)</code></pre>
         document.getElementById('barra-fill').style.width = '0';
         document.getElementById('mensaje').textContent = 'Corregí la evaluación para ver tu puntaje.';
         document.getElementById('nota-resultado').style.display = 'none';
+        document.getElementById('estado-envio').textContent = '';
+        document.getElementById('resumen-errores').innerHTML = '';
+        document.getElementById('resumen-errores').className = 'resumen-errores';
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ---------- Inicio ---------- */
+    function iniciar() {
+        var fecha = document.getElementById('alumno-fecha');
+        if (fecha && !fecha.value) {
+            var hoy = new Date();
+            var mes = String(hoy.getMonth() + 1).padStart(2, '0');
+            var dia = String(hoy.getDate()).padStart(2, '0');
+            fecha.value = hoy.getFullYear() + '-' + mes + '-' + dia;
+        }
+
+        var guardado = leerGuardado();
+        if (guardado) {
+            restaurar(guardado);
+            evaluar();
+            bloquear('🔒 <b>Esta evaluación ya fue enviada</b>' +
+                (guardado.momento ? ' el ' + fechaLegible(guardado.momento) : '') +
+                ' con una nota de <b>' + formatear(guardado.total) + ' / 13</b>. ' +
+                'Solo se puede realizar una vez desde este navegador. ' +
+                'Si necesitás rendirla de nuevo, hablá con el docente.');
+            setTimeout(function () {
+                document.getElementById('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
     }
 
     /* ---------- Eventos ---------- */
     document.getElementById('btn-corregir').addEventListener('click', corregir);
     document.getElementById('btn-reiniciar').addEventListener('click', reiniciar);
     document.getElementById('btn-imprimir').addEventListener('click', function () { window.print(); });
+
+    iniciar();
 })();
 </script>
 
