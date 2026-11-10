@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación · Programación Estructurada en Python</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --python-blue: #306998;
+            --python-blue-dark: #24507a;
+            --python-blue-light: #e8f0fa;
+            --python-yellow: #ffd43b;
+            --python-yellow-light: #fff9e6;
+            --secondary: #0f172a;
+            --accent: #0ea5e9;
+            --accent-light: #e0f2fe;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.65;
+            scroll-behavior: smooth;
+        }
+
+        .contenedor {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ---------- Encabezado ---------- */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 54px 0 46px;
+            text-align: center;
+            border-bottom: 4px solid var(--python-yellow);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            color: #93c5fd;
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+
+        .hero .subtitulo {
+            max-width: 730px;
+            margin: 0 auto 24px;
+            color: #cbd5e1;
+            font-size: 1.05rem;
+        }
+
+        .nav-rapida {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-enlace {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .btn-enlace:hover {
+            background-color: #ffffff;
+            color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        main { padding: 46px 0 70px; }
+
+        .bloque { margin-bottom: 48px; }
+
+        .encabezado-seccion {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .numero-paso {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--python-blue);
+            background-color: var(--python-blue-light);
+            width: 58px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .encabezado-seccion h2 {
+            font-size: 1.7rem;
+            color: var(--secondary);
+            letter-spacing: -0.01em;
+        }
+
+        .encabezado-seccion p { color: var(--text-muted); font-size: 0.98rem; }
+
+        /* ---------- Tarjetas ---------- */
+        .tarjeta {
+            background-color: var(--bg-card);
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 22px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .tarjeta h3 { color: var(--secondary); font-size: 1.3rem; margin-bottom: 12px; }
+        .tarjeta p { margin-bottom: 12px; font-size: 1rem; }
+        .tarjeta ul, .tarjeta ol { margin-left: 22px; }
+        .tarjeta li { margin-bottom: 6px; }
+
+        .tabla-puntos {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            font-size: 0.95rem;
+        }
+
+        .tabla-puntos th, .tabla-puntos td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .tabla-puntos th { background: var(--python-blue-light); color: var(--python-blue-dark); }
+        .tabla-puntos td:last-child, .tabla-puntos th:last-child { text-align: right; }
+
+        .datos-alumno {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .datos-alumno label {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .datos-alumno input {
+            font-family: inherit;
+            font-size: 0.98rem;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            color: var(--text-main);
+            background: #fff;
+        }
+
+        .datos-alumno input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        }
+
+        /* ---------- Preguntas ---------- */
+        .pregunta {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 18px;
+            box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.04);
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .enunciado {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 14px;
+        }
+
+        .num-preg {
+            background: var(--python-blue-light);
+            color: var(--python-blue);
+            font-weight: 800;
+            min-width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        .opciones {
+            display: grid;
+            gap: 10px;
+            margin-left: 46px;
+        }
+
+        .opciones label {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 11px 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 0.97rem;
+        }
+
+        .opciones label:hover {
+            background: var(--python-blue-light);
+            border-color: #bfdbfe;
+        }
+
+        .opciones input {
+            margin-top: 4px;
+            accent-color: var(--python-blue);
+            flex-shrink: 0;
+        }
+
+        .opciones label.opcion-correcta {
+            background: #dcfce7;
+            border-color: #22c55e;
+            font-weight: 600;
+        }
+
+        .opciones label.opcion-elegida-mal {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .pregunta.correcta { border-color: #86efac; background: #f0fdf4; }
+        .pregunta.incorrecta { border-color: #fca5a5; background: #fef2f2; }
+
+        .explicacion {
+            display: none;
+            margin: 16px 0 0 46px;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            font-size: 0.93rem;
+            color: #334155;
+        }
+
+        body.calificado .explicacion { display: block; }
+
+        /* ---------- Salidas ---------- */
+        .campo-salida {
+            margin: 14px 0 0 46px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .campo-salida input {
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.98rem;
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            min-width: 230px;
+            color: var(--text-main);
+        }
+
+        .campo-salida input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        }
+
+        .salida.correcta input { border-color: var(--success); background: #f0fdf4; }
+        .salida.incorrecta input { border-color: var(--danger); background: #fef2f2; }
+
+        /* ---------- Código ---------- */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 18px 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 14px 0;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        code {
+            font-family: 'Fira Code', Consolas, monospace;
+            background-color: #e2e8f0;
+            color: #be185d;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.88em;
+        }
+
+        .editor {
+            width: 100%;
+            min-height: 165px;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.9rem;
+            line-height: 1.55;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: var(--code-bg);
+            color: var(--code-text);
+            resize: vertical;
+            margin-top: 6px;
+            tab-size: 4;
+        }
+
+        .editor:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+        }
+
+        .resultado-codigo {
+            display: none;
+            margin-top: 14px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+        }
+
+        body.calificado .resultado-codigo { display: block; }
+
+        .resultado-codigo ul { list-style: none; margin: 8px 0 0; padding: 0; }
+        .resultado-codigo li { padding: 3px 0; font-size: 0.92rem; }
+        .resultado-codigo .ok { color: #15803d; }
+        .resultado-codigo .fail { color: #b91c1c; }
+        .puntos-code { color: var(--python-blue-dark); font-size: 1rem; }
+
+        .solucion { display: none; margin-top: 14px; }
+        body.calificado .solucion { display: block; }
+        .solucion summary { cursor: pointer; font-weight: 600; color: var(--python-blue); }
+        .solucion pre { margin-top: 10px; }
+
+        /* ---------- Acciones y resultado ---------- */
+        .acciones {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 34px 0;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primario { background: var(--python-blue); color: #ffffff; }
+        .btn-primario:hover { background: var(--python-blue-dark); transform: translateY(-1px); }
+
+        .btn-secundario {
+            background: #ffffff;
+            color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secundario:hover { background: #f1f5f9; }
+
+        .resultado {
+            display: none;
+            background: #ffffff;
+            border: 2px solid var(--python-blue);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(48, 105, 152, 0.2);
+            scroll-margin-top: 20px;
+        }
+
+        .resultado.visible { display: block; }
+
+        .puntaje-grande {
+            font-size: 3.6rem;
+            font-weight: 800;
+            color: var(--python-blue);
+            line-height: 1;
+        }
+
+        .puntaje-grande small {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .barra {
+            height: 14px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 18px auto 10px;
+            max-width: 520px;
+        }
+
+        .barra-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #0ea5e9, #22c55e);
+            transition: width 0.6s ease;
+        }
+
+        #mensaje { font-size: 1.05rem; font-weight: 600; margin-top: 8px; }
+
+        .desglose {
+            display: flex;
+            justify-content: center;
+            gap: 26px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .desglose b { color: var(--secondary); }
+
+        .nota {
+            margin-top: 18px;
+            padding: 12px 16px;
+            background: var(--python-yellow-light);
+            border-left: 4px solid var(--python-yellow);
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #78350f;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            padding: 24px 0 40px;
+        }
+
+        footer a { color: var(--python-blue); font-weight: 600; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 2rem; }
+            .datos-alumno { grid-template-columns: 1fr; }
+            .opciones, .explicacion, .campo-salida { margin-left: 0; }
+            .pregunta { padding: 18px; }
+            .tarjeta { padding: 22px; }
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: #ffffff; }
+            .hero { padding: 26px 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .hero .nav-rapida { display: none; }
+            .bloque { margin-bottom: 26px; }
+            .tarjeta, .pregunta, .resultado { box-shadow: none; break-inside: avoid; }
+            .editor { min-height: 130px; white-space: pre-wrap; }
+            .pregunta { page-break-inside: avoid; }
+            a[href]::after { content: ""; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="contenedor">
+        <span class="badge">Evaluación · Python</span>
+        <h1>Programación Estructurada</h1>
+        <p class="subtitulo">
+            Variables, operadores, condicionales, bucles, listas y funciones.
+            11 consignas, 13 puntos y corrección automática.
+        </p>
+        <div class="nav-rapida">
+            <a href="#parte-a" class="btn-enlace">Parte A · Opción múltiple</a>
+            <a href="#parte-b" class="btn-enlace">Parte B · Salidas</a>
+            <a href="#parte-c" class="btn-enlace">Parte C · Código</a>
+            <a href="#resultado" class="btn-enlace">Resultado</a>
+        </div>
+    </div>
+</header>
+
+<main class="contenedor">
+
+    <!-- ================= INSTRUCCIONES ================= -->
+    <section class="bloque">
+        <div class="tarjeta">
+            <h3>Antes de empezar</h3>
+            <ul>
+                <li>Leé cada consigna con atención y respondé <strong>todas</strong> las preguntas.</li>
+                <li>En la <strong>Parte A</strong> marcá una sola opción por pregunta.</li>
+                <li>En la <strong>Parte B</strong> escribí la salida exacta del programa. Si son varias líneas, separalas con un espacio.</li>
+                <li>En la <strong>Parte C</strong> escribí el código completo en Python. El corrector revisa la estructura, no ejecuta el programa.</li>
+                <li>Al terminar, presioná <strong>Corregir evaluación</strong>. Vas a ver el puntaje y la explicación de cada respuesta.</li>
+            </ul>
+
+            <table class="tabla-puntos">
+                <thead>
+                    <tr><th>Parte</th><th>Consigna</th><th>Puntos</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>A</td><td>5 preguntas de opción múltiple</td><td>5</td></tr>
+                    <tr><td>B</td><td>4 predicciones de salida</td><td>4</td></tr>
+                    <tr><td>C</td><td>2 ejercicios de código</td><td>4</td></tr>
+                    <tr><td colspan="2"><strong>Total</strong></td><td><strong>13</strong></td></tr>
+                </tbody>
+            </table>
+
+            <div class="datos-alumno">
+                <label>Nombre y apellido
+                    <input type="text" id="alumno-nombre" placeholder="Escribí tu nombre">
+                </label>
+                <label>Curso
+                    <input type="text" id="alumno-curso" placeholder="Ej.: 5.º 2.ª">
+                </label>
+                <label>Fecha
+                    <input type="date" id="alumno-fecha">
+                </label>
+            </div>
+
+            <p class="nota">
+                Tiempo sugerido: <strong>45 minutos</strong>. Intentá resolver sin ejecutar el código:
+                el objetivo es interpretar la lógica del programa.
+            </p>
+        </div>
+    </section>
+
+    <!-- ================= PARTE A ================= -->
+    <section class="bloque" id="parte-a">
+        <div class="encabezado-seccion">
+            <span class="numero-paso">A</span>
+            <div>
+                <h2>Opción múltiple</h2>
+                <p>5 preguntas · 1 punto cada una · marcá una sola respuesta.</p>
+            </div>
+        </div>
+
+        <article class="pregunta mc" data-correcta="b">
+            <p class="enunciado"><span class="num-preg">1</span>
+                ¿Qué estructura representa un <code>if / elif / else</code>?</p>
+            <div class="opciones">
+                <label data-op="a"><input type="radio" name="a2" value="a"> Secuencia.</label>
+                <label data-op="b"><input type="radio" name="a2" value="b"> Selección.</label>
+                <label data-op="c"><input type="radio" name="a2" value="c"> Iteración.</label>
+                <label data-op="d"><input type="radio" name="a2" value="d"> Una función.</label>
+            </div>
+            <p class="explicacion">El <code>if</code> elige qué bloque ejecutar según una condición: es una estructura de <strong>selección</strong>.</p>
+        </article>
+
+        <article class="pregunta mc" data-correcta="c">
+            <p class="enunciado"><span class="num-preg">2</span>
+                ¿Qué tipo de dato devuelve <code>input()</code>?</p>
+            <div class="opciones">
+                <label data-op="a"><input type="radio" name="a5" value="a"> <code>int</code></label>
+                <label data-op="b"><input type="radio" name="a5" value="b"> <code>float</code></label>
+                <label data-op="c"><input type="radio" name="a5" value="c"> <code>str</code></label>
+                <label data-op="d"><input type="radio" name="a5" value="d"> <code>bool</code></label>
+            </div>
+            <p class="explicacion"><code>input()</code> siempre devuelve texto (<code>str</code>). Si necesitás un número, convertilo con <code>int()</code> o <code>float()</code>.</p>
+        </article>
+
+        <article class="pregunta mc" data-correcta="b">
+            <p class="enunciado"><span class="num-preg">3</span>
+                ¿Qué valores recorre <code>for i in range(1, 6):</code>?</p>
+            <div class="opciones">
+                <label data-op="a"><input type="radio" name="a6" value="a"> 1, 2, 3, 4, 5 y 6.</label>
+                <label data-op="b"><input type="radio" name="a6" value="b"> 1, 2, 3, 4 y 5.</label>
+                <label data-op="c"><input type="radio" name="a6" value="c"> 0, 1, 2, 3, 4 y 5.</label>
+                <label data-op="d"><input type="radio" name="a6" value="d"> 0, 1, 2, 3, 4, 5 y 6.</label>
+            </div>
+            <p class="explicacion"><code>range(inicio, fin)</code> incluye el inicio y <strong>excluye el fin</strong>: llega hasta 5.</p>
+        </article>
+
+        <article class="pregunta mc" data-correcta="a">
+            <p class="enunciado"><span class="num-preg">4</span>
+                Si <code>notas = [8, 6, 10]</code>, ¿cuánto vale <code>notas[0]</code>?</p>
+            <div class="opciones">
+                <label data-op="a"><input type="radio" name="a7" value="a"> 8</label>
+                <label data-op="b"><input type="radio" name="a7" value="b"> 6</label>
+                <label data-op="c"><input type="radio" name="a7" value="c"> 10</label>
+                <label data-op="d"><input type="radio" name="a7" value="d"> Se produce un error.</label>
+            </div>
+            <p class="explicacion">Los índices de una lista empiezan en <strong>0</strong>: <code>notas[0]</code> es el primer elemento, 8.</p>
+        </article>
+
+        <article class="pregunta mc" data-correcta="a">
+            <p class="enunciado"><span class="num-preg">5</span>
+                ¿Para qué sirve definir una función?</p>
+            <div class="opciones">
+                <label data-op="a"><input type="radio" name="a10" value="a"> Para reutilizar código y organizarlo mejor.</label>
+                <label data-op="b"><input type="radio" name="a10" value="b"> Para que el programa ocupe más líneas.</label>
+                <label data-op="c"><input type="radio" name="a10" value="c"> Para reemplazar todas las variables.</label>
+                <label data-op="d"><input type="radio" name="a10" value="d"> Para ejecutar el código una sola vez y olvidarlo.</label>
+            </div>
+            <p class="explicacion">Una función agrupa instrucciones bajo un nombre y permite <strong>reutilizarlas</strong> sin repetir el código.</p>
+        </article>
+    </section>
+
+    <!-- ================= PARTE B ================= -->
+    <section class="bloque" id="parte-b">
+        <div class="encabezado-seccion">
+            <span class="numero-paso">B</span>
+            <div>
+                <h2>Predicción de salidas</h2>
+                <p>4 programas · 1 punto cada uno · escribí lo que muestra cada uno.</p>
+            </div>
+        </div>
+
+        <article class="pregunta salida" data-aceptadas="mayor">
+            <p class="enunciado"><span class="num-preg">6</span>
+                ¿Qué muestra este programa?</p>
+            <pre><code>x = 5
+if x &gt; 3:
+    print("mayor")
+else:
+    print("menor")</code></pre>
+            <label class="campo-salida">Salida:
+                <input type="text" id="b1" autocomplete="off" placeholder="Escribí la salida">
+            </label>
+            <p class="explicacion">Como 5 es mayor que 3, se ejecuta el <code>if</code>: la salida es <strong>mayor</strong>.</p>
+        </article>
+
+        <article class="pregunta salida" data-aceptadas="10">
+            <p class="enunciado"><span class="num-preg">7</span>
+                ¿Qué muestra este programa?</p>
+            <pre><code>total = 0
+for i in range(1, 5):
+    total += i
+print(total)</code></pre>
+            <label class="campo-salida">Salida:
+                <input type="text" id="b2" autocomplete="off" placeholder="Escribí la salida">
+            </label>
+            <p class="explicacion">Suma 1 + 2 + 3 + 4. El <code>range(1, 5)</code> no incluye el 5: la salida es <strong>10</strong>.</p>
+        </article>
+
+        <article class="pregunta salida" data-aceptadas="3 2 1">
+            <p class="enunciado"><span class="num-preg">8</span>
+                ¿Qué muestra este programa?</p>
+            <pre><code>contador = 3
+while contador &gt; 0:
+    print(contador)
+    contador -= 1</code></pre>
+            <label class="campo-salida">Salida:
+                <input type="text" id="b3" autocomplete="off" placeholder="Separá los valores con espacios">
+            </label>
+            <p class="explicacion">El bucle imprime 3, luego 2 y luego 1. La salida es <strong>3 2 1</strong> (uno por línea).</p>
+        </article>
+
+        <article class="pregunta salida" data-aceptadas="4 3">
+            <p class="enunciado"><span class="num-preg">9</span>
+                ¿Qué muestra este programa?</p>
+            <pre><code>notas = [7, 4, 9]
+print(notas[1])
+print(len(notas))</code></pre>
+            <label class="campo-salida">Salida:
+                <input type="text" id="b4" autocomplete="off" placeholder="Separá los valores con espacios">
+            </label>
+            <p class="explicacion"><code>notas[1]</code> es 4 y <code>len(notas)</code> es 3. La salida es <strong>4 3</strong> (una línea cada uno).</p>
+        </article>
+    </section>
+
+    <!-- ================= PARTE C ================= -->
+    <section class="bloque" id="parte-c">
+        <div class="encabezado-seccion">
+            <span class="numero-paso">C</span>
+            <div>
+                <h2>Ejercicios de código</h2>
+                <p>2 programas · 2 puntos cada uno · se corrige la estructura del código.</p>
+            </div>
+        </div>
+
+        <article class="pregunta codigo" data-ejercicio="c1">
+            <p class="enunciado"><span class="num-preg">10</span>
+                Escribí un programa que pida el <strong>nombre</strong> y la <strong>edad</strong> de una persona,
+                convierta la edad a entero y muestre un mensaje como:
+                <code>Hola Ana, tenés 17 años</code>. Usá un <strong>f-string</strong>.</p>
+            <textarea class="editor" id="c1" spellcheck="false" placeholder="nombre = input(...)&#10;edad = int(input(...))&#10;print(f'...')"></textarea>
+            <div class="resultado-codigo" id="res-c1"></div>
+            <details class="solucion">
+                <summary>Ver una solución de referencia</summary>
+                <pre><code>nombre = input("Nombre: ")
+edad = int(input("Edad: "))
+print(f"Hola {nombre}, tenés {edad} años")</code></pre>
+            </details>
+        </article>
+
+        <article class="pregunta codigo" data-ejercicio="c2">
+            <p class="enunciado"><span class="num-preg">11</span>
+                Escribí un programa que muestre los números del <strong>1 al 10</strong> (uno por línea)
+                y al final imprima la <strong>suma total</strong>, que debe dar 55. Usá un acumulador.</p>
+            <textarea class="editor" id="c2" spellcheck="false" placeholder="suma = 0&#10;for i in range(...):&#10;    ..."></textarea>
+            <div class="resultado-codigo" id="res-c2"></div>
+            <details class="solucion">
+                <summary>Ver una solución de referencia</summary>
+                <pre><code>suma = 0
+for i in range(1, 11):
+    print(i)
+    suma += i
+print("Suma total:", suma)</code></pre>
+            </details>
+        </article>
+    </section>
+
+    <!-- ================= RESULTADO ================= -->
+    <div class="acciones no-print">
+        <button type="button" class="btn btn-primario" id="btn-corregir">✅ Corregir evaluación</button>
+        <button type="button" class="btn btn-secundario" id="btn-reiniciar">🔄 Reiniciar</button>
+        <button type="button" class="btn btn-secundario" id="btn-imprimir">🖨️ Imprimir</button>
+    </div>
+
+    <section class="resultado" id="resultado" aria-live="polite">
+        <div class="puntaje-grande"><span id="puntaje-total">0</span><small> / 13 puntos</small></div>
+        <div class="barra"><div class="barra-fill" id="barra-fill"></div></div>
+        <p id="mensaje">Corregí la evaluación para ver tu puntaje.</p>
+        <div class="desglose">
+            <span>Parte A: <b id="puntos-a">0</b> / 5</span>
+            <span>Parte B: <b id="puntos-b">0</b> / 4</span>
+            <span>Parte C: <b id="puntos-c">0</b> / 4</span>
+        </div>
+        <p class="nota no-print" id="nota-resultado" style="display:none;">
+            Las respuestas correctas y las soluciones de referencia ya están visibles en cada consigna.
+        </p>
+    </section>
+
+    <footer>
+        <p><a href="guia.html">← Volver a la guía de Programación Estructurada</a></p>
+        <p>Evaluación interactiva · Python · 13 puntos</p>
+    </footer>
+
+</main>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ---------- Configuración de los ejercicios de código ---------- */
+    var EJERCICIOS = {
+        c1: [
+            { d: 'Pide al menos dos datos con input()', f: function (c) { return (c.match(/\binput\s*\(/g) || []).length >= 2; } },
+            { d: 'Convierte la edad con int()', f: function (c) { return /\bint\s*\(/.test(c); } },
+            { d: 'Usa un f-string', f: function (c) { return /\bf\s*["']/.test(c); } },
+            { d: 'Muestra el mensaje con print()', f: function (c) { return /\bprint\s*\(/.test(c); } },
+            { d: 'Incluye el nombre y la edad en el mensaje', f: function (c) { return /nombre/.test(c) && /edad/.test(c); } }
+        ],
+        c2: [
+            { d: 'Usa un bucle for o while', f: function (c) { return /\b(for|while)\b/.test(c); } },
+            { d: 'Recorre del 1 al 10', f: function (c) { return /range\s*\(\s*1\s*,\s*11\s*\)/.test(c) || /range\s*\(\s*(0\s*,\s*)?10\s*\)/.test(c) || /while[^\n]*<=\s*10/.test(c); } },
+            { d: 'Inicializa un acumulador en 0', f: function (c) { return /(suma|total|acum|resultado)\w*\s*=\s*0/.test(c); } },
+            { d: 'Acumula los valores con +=', f: function (c) { return /\+=/.test(c) || /=\s*(suma|total|acum|resultado)\s*\+/.test(c); } },
+            { d: 'Imprime los números y el total', f: function (c) { return (c.match(/print\s*\(/g) || []).length >= 2; } },
+            { d: 'Imprime la suma o el total al final', f: function (c) { return /print\s*\([^)]*(suma|total|acum|resultado)/.test(c); } }
+        ]
+    };
+
+    var PUNTOS_POR_EJERCICIO = 2;
+
+    /* ---------- Utilidades ---------- */
+    function normalizar(texto) {
+        return texto
+            .toString()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .replace(/[.,;:!?¡¿"']/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function formatear(n) {
+        return Number.isInteger(n) ? String(n) : n.toFixed(1);
+    }
+
+    /* ---------- Corrección ---------- */
+    function corregir() {
+        var puntosA = 0;
+        var puntosB = 0;
+        var puntosC = 0;
+
+        /* Parte A */
+        document.querySelectorAll('.mc').forEach(function (pregunta) {
+            var correcta = pregunta.dataset.correcta;
+            var marcada = pregunta.querySelector('input[type="radio"]:checked');
+            var elegida = marcada ? marcada.value : null;
+
+            pregunta.classList.remove('correcta', 'incorrecta');
+            pregunta.querySelectorAll('.opciones label').forEach(function (label) {
+                label.classList.remove('opcion-correcta', 'opcion-elegida-mal');
+            });
+
+            var labelCorrecta = pregunta.querySelector('.opciones label[data-op="' + correcta + '"]');
+            if (labelCorrecta) labelCorrecta.classList.add('opcion-correcta');
+
+            if (elegida === correcta) {
+                puntosA++;
+                pregunta.classList.add('correcta');
+            } else {
+                pregunta.classList.add('incorrecta');
+                if (elegida) {
+                    var labelElegida = pregunta.querySelector('.opciones label[data-op="' + elegida + '"]');
+                    if (labelElegida) labelElegida.classList.add('opcion-elegida-mal');
+                }
+            }
+        });
+
+        /* Parte B */
+        document.querySelectorAll('.salida').forEach(function (pregunta) {
+            var aceptadas = pregunta.dataset.aceptadas.split('|').map(normalizar);
+            var campo = pregunta.querySelector('input');
+            var valor = normalizar(campo.value);
+            var ok = aceptadas.indexOf(valor) !== -1;
+
+            pregunta.classList.remove('correcta', 'incorrecta');
+            if (ok) {
+                puntosB++;
+                pregunta.classList.add('correcta');
+            } else if (valor !== '') {
+                pregunta.classList.add('incorrecta');
+            }
+        });
+
+        /* Parte C */
+        Object.keys(EJERCICIOS).forEach(function (id) {
+            var area = document.getElementById(id);
+            var contenedor = document.getElementById('res-' + id);
+            if (!area || !contenedor) return;
+
+            var codigo = area.value.toLowerCase();
+            var checks = EJERCICIOS[id];
+            var aprobados = 0;
+
+            var items = checks.map(function (check) {
+                var paso = false;
+                try { paso = check.f(codigo); } catch (e) { paso = false; }
+                if (paso) aprobados++;
+                return '<li class="' + (paso ? 'ok' : 'fail') + '">' +
+                    (paso ? '✔' : '✘') + ' ' + check.d + '</li>';
+            }).join('');
+
+            var puntos = (aprobados / checks.length) * PUNTOS_POR_EJERCICIO;
+            puntosC += puntos;
+
+            contenedor.innerHTML =
+                '<strong class="puntos-code">' + formatear(puntos) + ' / ' + PUNTOS_POR_EJERCICIO + ' puntos</strong>' +
+                '<ul>' + items + '</ul>';
+        });
+
+        var total = Math.round((puntosA + puntosB + puntosC) * 10) / 10;
+
+        document.getElementById('puntaje-total').textContent = formatear(total);
+        document.getElementById('puntos-a').textContent = puntosA;
+        document.getElementById('puntos-b').textContent = puntosB;
+        document.getElementById('puntos-c').textContent = formatear(Math.round(puntosC * 10) / 10);
+        document.getElementById('barra-fill').style.width = (total / 13 * 100) + '%';
+
+        var mensaje;
+        if (total >= 12) {
+            mensaje = '🌟 Excelente. Dominás los fundamentos de la programación estructurada.';
+        } else if (total >= 9) {
+            mensaje = '✅ Muy bien. Tenés una base sólida; revisá los puntos marcados.';
+        } else if (total >= 8) {
+            mensaje = '👍 Aprobado. Repasá condicionales y bucles antes de avanzar.';
+        } else {
+            mensaje = '📚 A repasar. Volvé a la guía y practicá los ejercicios.';
+        }
+        document.getElementById('mensaje').textContent = mensaje;
+        document.getElementById('nota-resultado').style.display = 'block';
+
+        document.querySelector('.resultado').classList.add('visible');
+        document.body.classList.add('calificado');
+
+        document.getElementById('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ---------- Reinicio ---------- */
+    function reiniciar() {
+        if (!confirm('¿Borrar todas tus respuestas y empezar de nuevo?')) return;
+
+        document.querySelectorAll('input[type="radio"]').forEach(function (r) { r.checked = false; });
+        document.querySelectorAll('.salida input').forEach(function (i) { i.value = ''; });
+        document.querySelectorAll('.editor').forEach(function (t) { t.value = ''; });
+        document.querySelectorAll('.mc, .salida').forEach(function (q) {
+            q.classList.remove('correcta', 'incorrecta');
+        });
+        document.querySelectorAll('.opciones label').forEach(function (l) {
+            l.classList.remove('opcion-correcta', 'opcion-elegida-mal');
+        });
+        document.querySelectorAll('.resultado-codigo').forEach(function (r) { r.innerHTML = ''; });
+
+        document.body.classList.remove('calificado');
+        document.querySelector('.resultado').classList.remove('visible');
+        document.getElementById('puntaje-total').textContent = '0';
+        document.getElementById('puntos-a').textContent = '0';
+        document.getElementById('puntos-b').textContent = '0';
+        document.getElementById('puntos-c').textContent = '0';
+        document.getElementById('barra-fill').style.width = '0';
+        document.getElementById('mensaje').textContent = 'Corregí la evaluación para ver tu puntaje.';
+        document.getElementById('nota-resultado').style.display = 'none';
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ---------- Eventos ---------- */
+    document.getElementById('btn-corregir').addEventListener('click', corregir);
+    document.getElementById('btn-reiniciar').addEventListener('click', reiniciar);
+    document.getElementById('btn-imprimir').addEventListener('click', function () { window.print(); });
+})();
+</script>
+
+</body>
+</html>

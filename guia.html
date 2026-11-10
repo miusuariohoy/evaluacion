@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Trabajo: Programación Estructurada en Python</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ==========================================
+         ENCABEZADO / HEADER
+         ========================================== -->
+    <header class="hero">
+        <div class="contenedor">
+            <span class="badge">Curso de Programación Inicial - Python</span>
+            <h1>Guía de Aprendizaje & Desafío Práctico</h1>
+            <p class="subtitulo">Domina los fundamentos de la programación estructurada y construye tu primera aplicación de consola asistido por Inteligencia Artificial.</p>
+            <div class="nav-rapida">
+                <a href="#teoria" class="btn-enlace">📖 1. Apartado Teórico</a>
+                <a href="#practica" class="btn-enlace">🛠️ 2. Consigna Práctica</a>
+                <a href="#desafio-ia" class="btn-enlace">🤖 3. Laboratorio IA</a>
+                <a href="#github" class="btn-enlace">🚀 4. Publicar en GitHub</a>
+                <a href="index.html" class="btn-enlace">📝 5. Evaluación</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="contenedor">
+
+        <!-- ==========================================
+             SECCIÓN 1: APARTADO TEÓRICO Y EXPLICATIVO
+             ========================================== -->
+        <section id="teoria" class="bloque-principal">
+            <div class="encabezado-seccion">
+                <span class="numero-paso">01</span>
+                <div>
+                    <h2>Apartado Explicativo: Fundamentos de Programación Estructurada</h2>
+                    <p>Todo lo que necesitas conocer antes de escribir tu primer programa en Python.</p>
+                </div>
+            </div>
+
+            <!-- ¿Qué es programación estructurada? -->
+            <article class="tarjeta-info">
+                <h3>1. ¿Qué es la Programación Estructurada?</h3>
+                <p>La <strong>programación estructurada</strong> es un paradigma que organiza el código en <strong>estructuras de control</strong> claras y predecibles, evitando saltos incontrolados (como <code>goto</code>). Se basa en tres estructuras fundamentales:</p>
+                
+                <div class="analogia-box">
+                    <h4>💡 La analogía de la receta de cocina:</h4>
+                    <ul>
+                        <li><strong>Secuencia:</strong> Los pasos se ejecutan uno tras otro (picar cebolla → sofreír → agregar tomate).</li>
+                        <li><strong>Selección (si/no):</strong> Decisiones según condiciones (<em>si</em> hay sal → agregar sal; <em>sino</em> → omitir).</li>
+                        <li><strong>Iteración (repetir):</strong> Acciones que se repiten mientras se cumpla una condición (revolver <em>mientras</em> no espese).</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Variables y tipos de datos -->
+            <article class="tarjeta-info">
+                <h3>2. Variables, Tipos de Datos y Operadores</h3>
+                <p>Una <strong>variable</strong> es un espacio en memoria con un nombre que guarda un valor. En Python no hace falta declarar el tipo; se infiere al asignar.</p>
+                
+                <div class="tabla-responsiva">
+                    <table class="tabla-referencia">
+                        <thead>
+                            <tr><th>Tipo</th><th>Descripción</th><th>Ejemplo</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>int</code></td><td>Números enteros</td><td><code>edad = 17</code></td></tr>
+                            <tr><td><code>float</code></td><td>Números decimales</td><td><code>precio = 12.50</code></td></tr>
+                            <tr><td><code>str</code></td><td>Cadenas de texto</td><td><code>nombre = "Ana"</code></td></tr>
+                            <tr><td><code>bool</code></td><td>Valores lógicos</td><td><code>aprobado = True</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Operadores básicos</h4>
+                <pre class="codigo-bloque"><code># Aritméticos
++  -  *  /  //  %  **
+# Comparación
+==  !=  >  <  >=  <=
+# Lógicos
+and   or   not</code></pre>
+            </article>
+
+            <!-- Estructuras de control -->
+            <article class="tarjeta-info">
+                <h3>3. Estructuras de Control de Flujo</h3>
+                
+                <div class="grid-etiquetas">
+                    <div class="item-etiqueta">
+                        <h4>Secuencia</h4>
+                        <p>Instrucciones que se ejecutan en orden, una tras otra.</p>
+                        <pre><code>nombre = input("Nombre: ")
+edad = int(input("Edad: "))
+print(f"Hola {nombre}, tenés {edad} años")</code></pre>
+                    </div>
+
+                    <div class="item-etiqueta">
+                        <h4>Selección: if / elif / else</h4>
+                        <p>Ejecuta un bloque solo si se cumple una condición.</p>
+                        <pre><code>nota = float(input("Nota: "))
+if nota >= 7:
+    print("Promocionado")
+elif nota >= 4:
+    print("Regular")
+else:
+    print("Libre")</code></pre>
+                    </div>
+
+                    <div class="item-etiqueta">
+                        <h4>Iteración: while</h4>
+                        <p>Repite mientras la condición sea verdadera.</p>
+                        <pre><code>contador = 1
+while contador <= 5:
+    print(f"Vuelta {contador}")
+    contador += 1</code></pre>
+                    </div>
+
+                    <div class="item-etiqueta">
+                        <h4>Iteración: for</h4>
+                        <p>Recorre una secuencia (rango, lista, cadena).</p>
+                        <pre><code>for i in range(1, 6):
+    print(f"Vuelta {i}")
+
+nombres = ["Ana", "Luis", "Marta"]
+for n in nombres:
+    print(n)</code></pre>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Funciones -->
+            <article class="tarjeta-info">
+                <h3>4. Funciones: Modularización y Reutilización</h3>
+                <p>Una <strong>función</strong> es un bloque de código con nombre que realiza una tarea específica. Permite dividir el problema en partes menores, evitar duplicación y facilitar pruebas.</p>
+                
+                <pre class="codigo-bloque"><code># Definición
+def calcular_promedio(notas):
+    suma = sum(notas)
+    cantidad = len(notas)
+    return suma / cantidad
+
+# Uso
+mis_notas = [8, 7, 9, 6]
+prom = calcular_promedio(mis_notas)
+print(f"Promedio: {prom:.2f}")</code></pre>
+
+                <div class="analogia-box">
+                    <h4>💡 Partes de una función:</h4>
+                    <ul>
+                        <li><strong>def nombre(parametros):</strong> Cabecera (entrada).</li>
+                        <li><strong>cuerpo:</strong> Instrucciones (proceso).</li>
+                        <li><strong>return valor:</strong> Salida (opcional).</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Entrada/Salida y manejo de errores -->
+            <article class="tarjeta-info">
+                <h3>5. Entrada, Salida y Manejo Básico de Errores</h3>
+                
+                <div class="grid-etiquetas">
+                    <div class="item-etiqueta">
+                        <h4>Entrada: input()</h4>
+                        <p>Lee texto del teclado. Siempre devuelve <code>str</code>.</p>
+                        <pre><code>nombre = input("Nombre: ")
+edad = int(input("Edad: "))  # castear a int
+altura = float(input("Altura: "))</code></pre>
+                    </div>
+
+                    <div class="item-etiqueta">
+                        <h4>Salida: print() y f-strings</h4>
+                        <p>Muestra información en consola con formato.</p>
+                        <pre><code>print("Hola", nombre)
+print(f"Tenés {edad} años y medís {altura}m")</code></pre>
+                    </div>
+
+                    <div class="item-etiqueta">
+                        <h4>Try / Except</h4>
+                        <p>Captura errores para que el programa no se corte.</p>
+                        <pre><code>try:
+    edad = int(input("Edad: "))
+except ValueError:
+    print("¡Debés ingresar un número!")</code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- ==========================================
+             SECCIÓN 2: ACTIVIDAD PRÁCTICA (CONSIGNA)
+             ========================================== -->
+        <section id="practica" class="bloque-principal">
+            <div class="encabezado-seccion">
+                <span class="numero-paso">02</span>
+                <div>
+                    <h2>Consigna Práctica: ¡Construí tu Aplicación de Consola!</h2>
+                    <p>Ahora es tu turno de programar. Seguí estos pasos para crear un sistema completo con menú interactivo.</p>
+                </div>
+            </div>
+
+            <article class="tarjeta-info">
+                <h3>Tu desafío: Sistema de Gestión Simple</h3>
+                <p>El tema es libre: <em>Gestión de tareas</em>, <em>Agenda de contactos</em>, <em>Inventario de videojuegos</em>, <em>Control de gastos</em>, <em>Sistema de notas de alumnos</em>, etc.</p>
+
+                <div class="requisitos-box">
+                    <h4>📋 Requisitos obligatorios del programa:</h4>
+                    <ol>
+                        <li><strong>Menú principal en bucle (<code>while True</code>):</strong> Que muestre opciones y vuelva a mostrar tras cada acción hasta que el usuario elija "Salir".</li>
+                        <li><strong>Al menos 4 opciones funcionales:</strong> Ej: 1) Agregar, 2) Listar, 3) Buscar/Eliminar, 4) Estadísticas, 0) Salir.</li>
+                        <li><strong>Uso de funciones:</strong> Cada opción del menú debe ser una función separada (<code>def agregar():</code>, <code>def listar():</code>, etc.).</li>
+                        <li><strong>Estructuras de datos:</strong> Usar <strong>listas</strong> (y opcionalmente <strong>diccionarios</strong>) para guardar los datos en memoria.</li>
+                        <li><strong>Validación de entrada:</strong> Usar <code>try/except</code> para manejar errores de tipo (ej: ingresar texto cuando se pide número).</li>
+                        <li><strong>Código limpio y comentado:</strong> Nombres de variables y funciones descriptivos, comentarios explicando qué hace cada parte.</li>
+                    </ol>
+                </div>
+
+                <h4>Estructura de archivos recomendada:</h4>
+                <pre class="codigo-bloque"><code>mi-proyecto-python/
+├── main.py           # Punto de entrada (menú principal)
+├── funciones.py      # Funciones de cada opción del menú
+├── datos.py          # Listas/diccionarios globales (opcional)
+└── README.md         # Descripción del proyecto</code></pre>
+
+                <h4>Esqueleto base para <code>main.py</code>:</h4>
+                <pre class="codigo-bloque"><code># main.py - Programa principal
+from funciones import *
+
+def mostrar_menu():
+    print("\n" + "="*40)
+    print("   MI SISTEMA DE GESTIÓN")
+    print("="*40)
+    print("1. Agregar elemento")
+    print("2. Listar elementos")
+    print("3. Buscar / Eliminar")
+    print("4. Ver estadísticas")
+    print("0. Salir")
+    print("-"*40)
+
+def main():
+    while True:
+        mostrar_menu()
+        try:
+            opcion = int(input("Elegí una opción: "))
+            if opcion == 1:
+                agregar()
+            elif opcion == 2:
+                listar()
+            elif opcion == 3:
+                buscar_eliminar()
+            elif opcion == 4:
+                estadisticas()
+            elif opcion == 0:
+                print("¡Hasta luego!")
+                break
+            else:
+                print("Opción inválida. Probá de nuevo.")
+        except ValueError:
+            print("Error: Debés ingresar un número.")
+
+if __name__ == "__main__":
+    main()</code></pre>
+            </article>
+        </section>
+
+        <!-- ==========================================
+             SECCIÓN 3: LABORATORIO IA
+             ========================================== -->
+        <section id="desafio-ia" class="bloque-principal">
+            <div class="encabezado-seccion">
+                <span class="numero-paso">03</span>
+                <div>
+                    <h2>Laboratorio de IA: Generando Código Python con Criterio</h2>
+                    <p>No programarás todo desde cero: aprenderás a ser un director de desarrollo utilizando IA con criterio técnico.</p>
+                </div>
+            </div>
+
+            <article class="tarjeta-info">
+                <h3>¿Cómo pedirle código Python a una IA?</h3>
+                <p>Una Inteligencia Artificial (ChatGPT, Claude, Gemini, Copilot, etc.) te dará mejores resultados mientras más específico y técnico sea tu pedido (prompt).</p>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <span>🤖 Prompt Plantilla para Copiar y Personalizar:</span>
+                    </div>
+                    <pre class="prompt-texto"><code>Actúa como un desarrollador Python senior y docente de programación estructurada.
+Voy a crear un sistema de gestión de consola en Python (programación estructurada, sin POO).
+El tema es: [Gestión de tareas / Agenda de contactos / Inventario / Lo que elijas].
+
+Estructura deseada:
+- main.py: menú principal en while True con try/except
+- funciones.py: una función por opción del menú
+- datos.py: lista/diccionario global para almacenar en memoria
+
+Requisitos del código:
+1. Menú con al menos 4 opciones + salir (0)
+2. Cada opción en su propia función con docstring
+3. Uso de listas/diccionarios para persistir datos en memoria
+3. Validación de entrada con try/except (ValueError, IndexError, etc.)
+4. Código limpio: nombres descriptivos (snake_case), comentarios, sin código muerto
+5. Docstrings en funciones explicando parámetros y retorno
+6. NO uses clases, herencia, decoradores ni librerías externas (solo built-ins)
+
+IMPORTANTE: Comenta cada bloque de código explicando QUÉ hace y POR QUÉ (variables, bucles, condiciones, funciones, manejo de errores).</code></pre>
+                </div>
+
+                <div class="alerta-criterio">
+                    <h4>⚠️ La Regla de Oro del Desarrollador: Criterio Crítico</h4>
+                    <p><strong>¡Prohibido hacer Copiar y Pegar a ciegas!</strong></p>
+                    <p>La IA es tu asistente, no el dueño del proyecto. Tu misión de aprendizaje es:</p>
+                    <ul>
+                        <li>Abrir los archivos <code>.py</code> y leer los comentarios y docstrings de la IA.</li>
+                        <li>Probar cambiar valores: modifica una condición, agrega un <code>print</code> de depuración, rompe el código a propósito para ver el error y entiende el traceback.</li>
+                        <li>Si la IA incluye algo que no comprendes, pregúntale: <em>¿Por qué usaste <code>lista.append()</code> y no <code>lista += [item]</code>? ¿Qué diferencia hay entre <code>is</code> y <code>==</code>?</em></li>
+                        <li>Ejecutá el programa paso a paso con <code>python -m pdb main.py</code> o <code>breakpoint()</code> para ver el flujo.</li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+
+        <!-- ==========================================
+             SECCIÓN 4: PUBLICACIÓN EN GITHUB
+             ========================================== -->
+        <section id="github" class="bloque-principal">
+            <div class="encabezado-seccion">
+                <span class="numero-paso">04</span>
+                <div>
+                    <h2>Publicá tu Proyecto en GitHub</h2>
+                    <p>Compartí tu código con el mundo y entregá tu trabajo final con un link profesional.</p>
+                </div>
+            </div>
+
+            <article class="tarjeta-info">
+                <h3>Pasos para publicar tu proyecto Python en minutos:</h3>
+                
+                <div class="pasos-github">
+                    <div class="paso-item">
+                        <span class="paso-num">1</span>
+                        <div>
+                            <h4>Creá tu cuenta y un nuevo repositorio</h4>
+                            <p>Entrá a <a href="https://github.com" target="_blank">github.com</a>, iniciá sesión y hacé clic en <strong>New repository</strong>. Nombralo (ej: <code>mi-sistema-gestion</code>), marcá <strong>Public</strong> y <strong>NO</strong> marques "Add a README" (lo harás vos).</p>
+                        </div>
+                    </div>
+
+                    <div class="paso-item">
+                        <span class="paso-num">2</span>
+                        <div>
+                            <h4>Subí tus archivos desde la terminal</h4>
+                            <p>Abrí la terminal en tu carpeta del proyecto y ejecutá:</p>
+                            <pre class="codigo-bloque"><code>git init
+git add .
+git commit -m "Versión inicial: sistema de gestión completo"
+git branch -M main
+git remote add origin https://github.com/TU_USUARIO/mi-sistema-gestion.git
+git push -u origin main</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="paso-item">
+                        <span class="paso-num">3</span>
+                        <div>
+                            <h4>Creá un README.md profesional</h4>
+                            <p>En GitHub, clic en <strong>Add file → Create new file</strong>, nombralo <code>README.md</code> y pegá esta plantilla:</p>
+                            <pre class="codigo-bloque"><code># Nombre de mi Sistema
+
+Breve descripción de qué hace el programa.
+
+## 🚀 Cómo ejecutar
+```bash
+python main.py
+```
+
+## 📋 Funcionalidades
+- ✅ Agregar elementos
+- ✅ Listar elementos
+- ✅ Buscar / Eliminar
+- ✅ Estadísticas
+
+## 🛠️ Tecnologías
+- Python 3.x (solo librerías estándar)
+
+## 👨‍💻 Autor
+Tu Nombre - Curso/Año</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="paso-item">
+                        <span class="paso-num">4</span>
+                        <div>
+                            <h4>¡Tu código está online!</h4>
+                            <p>Tu repositorio público quedará en: <br><code>https://github.com/TU_USUARIO/mi-sistema-gestion</code><br>Comparte ese link con tu docente. ¡Cualquiera puede clonar y ejecutar tu programa con <code>git clone ... && python main.py</code>!</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         PIE DE PÁGINA
+         ========================================== -->
+    <footer class="pie">
+        <div class="contenedor">
+            <p><strong>Material Pedagógico: Programación Estructurada en Python</strong></p>
+            <p>Diseñado con estándares docentes y buenas prácticas de enseñanza interactiva.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

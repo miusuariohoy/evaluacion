@@ -1,0 +1,475 @@
+/* ====================================================================
+   ESTILOS DE LA GUÍA: PROGRAMACIÓN ESTRUCTURADA EN PYTHON
+   Archivo: estilos.css
+   ==================================================================== */
+
+/* --------------------------------------------------------------------
+   1. VARIABLES CSS (Custom Properties) - Paleta de colores y espaciado
+   Definimos todo aquí para cambiar el tema en un solo lugar.
+   -------------------------------------------------------------------- */
+:root {
+    /* Colores principales - Tema Python (azul/amarillo) */
+    --python-blue: #306998;
+    --python-blue-dark: #24507a;
+    --python-blue-light: #e8f0fa;
+    --python-yellow: #ffd43b;
+    --python-yellow-light: #fff9e6;
+
+    /* Neutros */
+    --secondary: #0f172a;
+    --accent: #0ea5e9;
+    --accent-light: #e0f2fe;
+    --bg-page: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --code-bg: #0f172a;
+    --code-text: #f1f5f9;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #0ea5e9;
+}
+
+/* --------------------------------------------------------------------
+   2. RESET Y BASE - Normalización entre navegadores
+   -------------------------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* padding y border NO aumentan el ancho total */
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    line-height: 1.7;
+    scroll-behavior: smooth; /* Scroll suave al hacer clic en anclas */
+}
+
+/* Contenedor central con ancho máximo y padding lateral */
+.contenedor {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* --------------------------------------------------------------------
+   3. HEADER / HERO - Cabecera principal con gradiente
+   -------------------------------------------------------------------- */
+.hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    color: #ffffff;
+    padding: 60px 0 50px 0;
+    text-align: center;
+    border-bottom: 4px solid var(--python-yellow);
+}
+
+.badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    color: #93c5fd;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 9999px; /* Pill shape */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+    backdrop-filter: blur(5px);
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+}
+
+.hero .subtitulo {
+    font-size: 1.15rem;
+    color: #cbd5e1;
+    max-width: 680px;
+    margin: 0 auto 30px auto;
+}
+
+/* Navegación rápida (anchor links) */
+.nav-rapida {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.btn-enlace {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-enlace:hover {
+    background-color: #ffffff;
+    color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* --------------------------------------------------------------------
+   4. SECCIONES Y TARJETAS - Layout principal
+   -------------------------------------------------------------------- */
+main {
+    padding: 50px 0 80px 0;
+}
+
+.bloque-principal {
+    margin-bottom: 60px;
+}
+
+.encabezado-seccion {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 16px;
+}
+
+.numero-paso {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--python-blue);
+    background-color: var(--python-blue-light);
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    flex-shrink: 0; /* No se encoje */
+}
+
+.encabezado-seccion h2 {
+    font-size: 1.8rem;
+    color: var(--secondary);
+    letter-spacing: -0.01em;
+}
+
+.encabezado-seccion p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+/* Tarjetas de contenido */
+.tarjeta-info {
+    background-color: var(--bg-card);
+    border-radius: 14px;
+    padding: 32px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.tarjeta-info h3 {
+    color: var(--secondary);
+    font-size: 1.35rem;
+    margin-bottom: 16px;
+}
+
+.tarjeta-info p {
+    margin-bottom: 16px;
+    font-size: 1.02rem;
+}
+
+/* --------------------------------------------------------------------
+   5. COMPONENTES ESPECIALES
+   -------------------------------------------------------------------- */
+
+/* Caja de analogía (verde) */
+.analogia-box {
+    background-color: #f0fdf4;
+    border-left: 5px solid var(--success);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.analogia-box h4 {
+    color: #15803d;
+    margin-bottom: 10px;
+}
+
+.analogia-box ul {
+    margin-left: 20px;
+}
+
+.analogia-box li {
+    margin-bottom: 6px;
+}
+
+/* Cajas de código */
+code {
+    font-family: 'Fira Code', monospace;
+    background-color: #e2e8f0;
+    color: #d946ef;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+pre {
+    background-color: var(--code-bg);
+    color: var(--code-text);
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto; /* Scroll horizontal si el código es ancho */
+    margin: 16px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+/* Tablas responsivas */
+.tabla-responsiva {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.tabla-referencia {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.tabla-referencia th,
+.tabla-referencia td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.tabla-referencia th {
+    background-color: #f1f5f9;
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.tabla-referencia tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Grid de etiquetas (2-4 columnas según ancho) */
+.grid-etiquetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.item-etiqueta {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    padding: 18px;
+    border-radius: 10px;
+}
+
+.item-etiqueta h4 {
+    color: var(--python-blue-dark);
+    margin-bottom: 8px;
+}
+
+/* --------------------------------------------------------------------
+   6. CONSIGNA & REQUISITOS
+   -------------------------------------------------------------------- */
+.requisitos-box {
+    background-color: var(--python-blue-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.requisitos-box h4 {
+    color: var(--python-blue-dark);
+    margin-bottom: 12px;
+}
+
+.requisitos-box ol {
+    margin-left: 22px;
+}
+
+.requisitos-box li {
+    margin-bottom: 8px;
+}
+
+/* --------------------------------------------------------------------
+   7. PROMPT PARA IA & CRITERIO
+   -------------------------------------------------------------------- */
+.prompt-box {
+    background: #1e293b;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px 0;
+    border: 1px solid #334155;
+}
+
+.prompt-header {
+    background: #0f172a;
+    padding: 12px 20px;
+    color: #38bdf8;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #334155;
+}
+
+.prompt-texto {
+    background: transparent;
+    color: #e2e8f0;
+    margin: 0;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 0.95rem;
+}
+
+.alerta-criterio {
+    background: #fff7ed;
+    border-left: 5px solid var(--warning);
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 25px;
+}
+
+.alerta-criterio h4 {
+    color: #c2410c;
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+}
+
+.alerta-criterio ul {
+    margin-left: 22px;
+    margin-top: 10px;
+}
+
+.alerta-criterio li {
+    margin-bottom: 8px;
+}
+
+/* --------------------------------------------------------------------
+   8. PASOS GITHUB
+   -------------------------------------------------------------------- */
+.pasos-github {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.paso-item {
+    display: flex;
+    gap: 20px;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 10px;
+    align-items: flex-start;
+}
+
+.paso-num {
+    background: var(--secondary);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.2rem;
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.paso-item h4 {
+    color: var(--secondary);
+    margin-bottom: 6px;
+}
+
+.paso-item a {
+    color: var(--python-blue);
+    font-weight: 600;
+}
+
+/* --------------------------------------------------------------------
+   9. FOOTER
+   -------------------------------------------------------------------- */
+.pie {
+    background-color: var(--secondary);
+    color: #94a3b8;
+    text-align: center;
+    padding: 35px 0;
+    font-size: 0.95rem;
+}
+
+.pie strong {
+    color: #ffffff;
+}
+
+/* --------------------------------------------------------------------
+   10. RESPONSIVE - Mobile First
+   -------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+    .grid-etiquetas {
+        grid-template-columns: 1fr;
+    }
+    .paso-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .tarjeta-info {
+        padding: 24px;
+    }
+    .encabezado-seccion {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+}
+
+/* --------------------------------------------------------------------
+   11. UTILIDADES EXTRA
+   -------------------------------------------------------------------- */
+/* Scrollbar personalizada para código */
+pre::-webkit-scrollbar {
+    height: 8px;
+}
+pre::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+pre::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
+pre::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* Selección de texto */
+::selection {
+    background: var(--python-yellow);
+    color: var(--secondary);
+}
