@@ -588,7 +588,7 @@
         <h1>Programación Estructurada</h1>
         <p class="subtitulo">
             Variables, operadores, condicionales, bucles, listas y funciones.
-            11 consignas, 13 puntos y corrección automática.
+            11 consignas, 10 puntos y corrección automática.
         </p>
         <div class="nav-rapida">
             <a href="#parte-a" class="btn-enlace">Parte A · Opción múltiple</a>
@@ -611,7 +611,7 @@
                 <li>En la <strong>Parte B</strong> escribí la salida exacta del programa. Si son varias líneas, separalas con un espacio.</li>
                 <li>En la <strong>Parte C</strong> escribí el código completo en Python. El corrector revisa la estructura, no ejecuta el programa.</li>
                 <li>La evaluación se puede realizar <strong>una sola vez</strong>. Al presionar <strong>Corregir y enviar</strong> ya no se puede modificar.</li>
-                <li>Al corregir, la <strong>nota y la corrección</strong> se envían automáticamente a <strong>tecnicaunodocke@gmail.com</strong>.</li>
+                <li>Al corregir, la <strong>nota y la corrección</strong> se envían automáticamente al docente.</li>
                 <li>Al terminar, presioná <strong>Corregir evaluación</strong>. Vas a ver el puntaje y la explicación de cada respuesta.</li>
             </ul>
 
@@ -621,9 +621,9 @@
                 </thead>
                 <tbody>
                     <tr><td>A</td><td>5 preguntas de opción múltiple</td><td>5</td></tr>
-                    <tr><td>B</td><td>4 predicciones de salida</td><td>4</td></tr>
-                    <tr><td>C</td><td>2 ejercicios de código</td><td>4</td></tr>
-                    <tr><td colspan="2"><strong>Total</strong></td><td><strong>13</strong></td></tr>
+                    <tr><td>B</td><td>4 predicciones de salida</td><td>2</td></tr>
+                    <tr><td>C</td><td>2 ejercicios de código</td><td>3</td></tr>
+                    <tr><td colspan="2"><strong>Total</strong></td><td><strong>10</strong></td></tr>
                 </tbody>
             </table>
 
@@ -723,7 +723,7 @@
             <span class="numero-paso">B</span>
             <div>
                 <h2>Predicción de salidas</h2>
-                <p>4 programas · 1 punto cada uno · escribí lo que muestra cada uno.</p>
+                <p>4 programas · 0,5 puntos cada uno · escribí lo que muestra cada uno.</p>
             </div>
         </div>
 
@@ -786,7 +786,7 @@ print(len(notas))</code></pre>
             <span class="numero-paso">C</span>
             <div>
                 <h2>Ejercicios de código</h2>
-                <p>2 programas · 2 puntos cada uno · se corrige la estructura del código.</p>
+                <p>2 programas · 1,5 puntos cada uno · se corrige la estructura del código.</p>
             </div>
         </div>
 
@@ -832,13 +832,13 @@ print("Suma total:", suma)</code></pre>
     <div class="aviso-envio" id="aviso-envio" role="status"></div>
 
     <section class="resultado" id="resultado" aria-live="polite">
-        <div class="puntaje-grande"><span id="puntaje-total">0</span><small> / 13 puntos</small></div>
+        <div class="puntaje-grande"><span id="puntaje-total">0</span><small> / 10 puntos</small></div>
         <div class="barra"><div class="barra-fill" id="barra-fill"></div></div>
         <p id="mensaje">Corregí la evaluación para ver tu puntaje.</p>
         <div class="desglose">
             <span>Parte A: <b id="puntos-a">0</b> / 5</span>
-            <span>Parte B: <b id="puntos-b">0</b> / 4</span>
-            <span>Parte C: <b id="puntos-c">0</b> / 4</span>
+            <span>Parte B: <b id="puntos-b">0</b> / 2</span>
+            <span>Parte C: <b id="puntos-c">0</b> / 3</span>
         </div>
         <div class="resumen-errores" id="resumen-errores"></div>
         <p class="nota no-print" id="nota-resultado" style="display:none;">
@@ -849,7 +849,7 @@ print("Suma total:", suma)</code></pre>
 
     <footer>
         <p><a href="guia.html">← Volver a la guía de Programación Estructurada</a></p>
-        <p>Evaluación interactiva · Python · 13 puntos</p>
+        <p>Evaluación interactiva · Python · 10 puntos</p>
     </footer>
 
 </main>
@@ -858,9 +858,10 @@ print("Suma total:", suma)</code></pre>
 (function () {
     'use strict';
 
-    var MAX_PUNTOS = 13;
-    var CORREO_DOCENTE = 'tecnicaunodocke@gmail.com';
-    var CLAVE_ENVIO = 'evaluacion_python_13_enviada_v1';
+    var MAX_PUNTOS = 10;
+    var PUNTOS_POR_SALIDA = 0.5;
+    var CORREO_DOCENTE = atob('dGVjbmljYXVub2RvY2tlQGdtYWlsLmNvbQ==');
+    var CLAVE_ENVIO = 'evaluacion_python_10_enviada_v1';
     var bloqueada = false;
 
     /* ---------- Configuración de los ejercicios de código ---------- */
@@ -891,7 +892,7 @@ print("Suma total:", suma)</code></pre>
         ]
     };
 
-    var PUNTOS_POR_EJERCICIO = 2;
+    var PUNTOS_POR_EJERCICIO = 1.5;
 
     /* ---------- Utilidades ---------- */
     function normalizar(texto) {
@@ -987,7 +988,7 @@ print("Suma total:", suma)</code></pre>
 
             pregunta.classList.remove('correcta', 'incorrecta');
             if (ok) {
-                puntosB++;
+                puntosB += PUNTOS_POR_SALIDA;
                 pregunta.classList.add('correcta');
             } else {
                 pregunta.classList.add('incorrecta');
@@ -1049,16 +1050,16 @@ print("Suma total:", suma)</code></pre>
 
         document.getElementById('puntaje-total').textContent = formatear(total);
         document.getElementById('puntos-a').textContent = puntosA;
-        document.getElementById('puntos-b').textContent = puntosB;
+        document.getElementById('puntos-b').textContent = formatear(redondear(puntosB));
         document.getElementById('puntos-c').textContent = formatear(redondear(puntosC));
         document.getElementById('barra-fill').style.width = (total / MAX_PUNTOS * 100) + '%';
 
         var mensaje;
-        if (total >= 12) {
+        if (total >= 9) {
             mensaje = '🌟 Excelente. Dominás los fundamentos de la programación estructurada.';
-        } else if (total >= 9) {
+        } else if (total >= 7) {
             mensaje = '✅ Muy bien. Tenés una base sólida; revisá los puntos marcados.';
-        } else if (total >= 8) {
+        } else if (total >= 6) {
             mensaje = '👍 Aprobado. Repasá condicionales y bucles antes de avanzar.';
         } else {
             mensaje = '📚 A repasar. Volvé a la guía y practicá los ejercicios.';
@@ -1175,7 +1176,7 @@ print("Suma total:", suma)</code></pre>
         estado.textContent = 'Enviando la nota y la corrección por correo...';
 
         var d = datosEnvio(res);
-        var asunto = 'Evaluación Python · ' + (d.nombre || 'Sin nombre') + ' · ' + formatear(res.total) + '/13';
+        var asunto = 'Evaluación Python · ' + (d.nombre || 'Sin nombre') + ' · ' + formatear(res.total) + '/10';
 
         var cuerpo = {
             _subject: asunto,
@@ -1183,10 +1184,10 @@ print("Suma total:", suma)</code></pre>
             Nombre: d.nombre || '(sin completar)',
             Curso: d.curso || '(sin completar)',
             Fecha: d.fecha || '(sin completar)',
-            Nota: formatear(res.total) + ' / 13',
-            'Parte A': res.puntosA + ' / 5',
-            'Parte B': res.puntosB + ' / 4',
-            'Parte C': formatear(res.puntosC) + ' / 4',
+            Nota: formatear(res.total) + ' / 10',
+            'Parte A': formatear(res.puntosA) + ' / 5',
+            'Parte B': formatear(res.puntosB) + ' / 2',
+            'Parte C': formatear(res.puntosC) + ' / 3',
             Errores: res.erroresTexto || 'Sin errores',
             Correccion: res.detalle
         };
@@ -1200,22 +1201,29 @@ print("Suma total:", suma)</code></pre>
             if (!r.ok) throw new Error('HTTP ' + r.status);
             return r.json();
         })
-        .then(function () {
+        .then(function (data) {
+            if (data && String(data.success) === 'false') {
+                throw new Error(data.message || 'No se pudo entregar el correo');
+            }
             estado.className = 'estado-envio ok';
-            estado.textContent = '✅ Nota y corrección enviadas a ' + CORREO_DOCENTE + '.';
+            estado.textContent = '✅ Nota y corrección enviadas al docente.';
         })
-        .catch(function () {
+        .catch(function (err) {
+            var detalle = err && err.message ? err.message : '';
+            var extra = /activ/i.test(detalle)
+                ? ' El servicio de correo está pendiente de activación: avisá al docente.'
+                : '';
             var mailto = 'mailto:' + CORREO_DOCENTE +
                 '?subject=' + encodeURIComponent(asunto) +
                 '&body=' + encodeURIComponent(
                     'Nombre: ' + (d.nombre || '') +
                     '\nCurso: ' + (d.curso || '') +
                     '\nFecha: ' + (d.fecha || '') +
-                    '\nNota: ' + formatear(res.total) + '/13' +
+                    '\nNota: ' + formatear(res.total) + '/10' +
                     '\n\n' + res.detalle
                 );
             estado.className = 'estado-envio fail';
-            estado.innerHTML = '⚠️ No se pudo enviar automáticamente. ' +
+            estado.innerHTML = '⚠️ No se pudo enviar automáticamente.' + extra + ' ' +
                 '<a href="' + mailto + '">Enviar la corrección por correo</a>.';
         });
     }
@@ -1229,8 +1237,8 @@ print("Suma total:", suma)</code></pre>
         guardar(datos);
 
         bloquear('🔒 <b>Evaluación enviada.</b> Tu nota es <b>' + formatear(res.total) +
-            ' / 13</b> y la corrección se envía a ' + CORREO_DOCENTE +
-            '. No se puede volver a realizar ni modificar.');
+            ' / 10</b> y la corrección se envía al docente.' +
+            ' No se puede volver a realizar ni modificar.');
 
         enviarCorreo(res);
 
@@ -1285,7 +1293,7 @@ print("Suma total:", suma)</code></pre>
             evaluar();
             bloquear('🔒 <b>Esta evaluación ya fue enviada</b>' +
                 (guardado.momento ? ' el ' + fechaLegible(guardado.momento) : '') +
-                ' con una nota de <b>' + formatear(guardado.total) + ' / 13</b>. ' +
+                ' con una nota de <b>' + formatear(guardado.total) + ' / 10</b>. ' +
                 'Solo se puede realizar una vez desde este navegador. ' +
                 'Si necesitás rendirla de nuevo, hablá con el docente.');
             setTimeout(function () {
